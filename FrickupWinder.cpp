@@ -1,4 +1,6 @@
-/* Copyright (c) 2014 Matt Frick All Rights Reserved. */
+/* Copyright (c) 2014-2021 Matt Frick All Rights Reserved. */
+
+/* This file is best viewed with Tabs = 4 spaces */
 
 #ifdef OUTSIDE_OF_ARDUINO_IDE
 #include "Arduino.h"
@@ -9,14 +11,9 @@
 
 #include "EEPROM.h"
 
-int dbg1;
-
 #define SOFTWARE_VERSION 1
 
 #define USE_SERIAL
-//#ifdef INPUT_PULLUP
-//#undef INPUT_PULLUP
-//#endif
 #define USE_ENCODER 1
 #if USE_ENCODER
 #include <Encoder.h>
@@ -632,20 +629,19 @@ void Motor::EStop(int val)
 
 /***************************  Axis Specifics: ********************/
 typedef enum {
-  HOMING_NOT_STARTED,
-  HOMING_1_INITIAL_CLOSE,
-  HOMING_2_INITIAL_BACKOFF,
-  HOMING_3_SLOW_CLOSE,
-  HOMING_4_SLOW_BACKOFF,
-  HOMING_5_CLOSE_OTHER_SIDE,
-  HOMING_6_OPEN_OTHER_SIDE,
-  HOMING_7_TO_HOME,
-  HOMING_ERROR,
-  HOMED
+	HOMING_NOT_STARTED,
+	HOMING_1_INITIAL_CLOSE,
+	HOMING_2_INITIAL_BACKOFF,
+	HOMING_3_SLOW_CLOSE,
+	HOMING_4_SLOW_BACKOFF,
+	HOMING_5_CLOSE_OTHER_SIDE,
+	HOMING_6_OPEN_OTHER_SIDE,
+	HOMING_7_TO_HOME,
+	HOMING_ERROR,
+	HOMED
 } homing_state_t;
 
 class Axis {
-//private:HomingStateHandler
 public:
 	Motor			motor;
 	homing_state_t	homing_state;
@@ -657,7 +653,6 @@ public:
 	int				hard_limit[2]; // Min is [0] max is [1]
 	int				steps_per_rev;
 	MotFunctions	mot_functions;
-//public:
 	Axis(MotFunctions_t *mf, int s) {	mot_functions = *mf;	// Save a copy
 										motor.SetMotorFunctions(mf);
 										steps_per_rev = s; }
@@ -981,7 +976,6 @@ void Menu::DrawScreen(LiquidCrystal *lcd)
 		}
 		lcd->setCursor(0, y);
 		lcd->printf("%c%s%s               ", (selected == item) ? '>' : ' ', item->name, buf);
-		//lcd->printf("%d%s%s               ", dbg1, item->name, buf);
 		item = ItemNext(item);
 	}
 	screen_redraws++;
@@ -1416,11 +1410,7 @@ SetLimRMode:
 	}
 	
 	lcd->setCursor(0,0);
-#if 1 //def NOT_DEBUGGING
 	lcd->printf("%5.5d/%5.5d %drpm ", half_winding_events / 2, winding_limit, spindle->GetRpm());
-#else
-	lcd->printf("%4.4d/%4.4d %d     ", half_winding_events / 2, winding_limit, dbg1);
-#endif
 
 	lcd->setCursor(0,1);
 	if (trav->motor.estopped) {
